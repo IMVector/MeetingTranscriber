@@ -30,20 +30,19 @@ jobs:
 
     - name: Create archive
       run: |
-        cd build/windows/x64/runner/Release
-        7z a -tzip ../../../meeting_transcriber_windows.zip .
+        Compress-Archive -Path build/windows/x64/runner/Release/* -DestinationPath meeting_transcriber_windows.zip
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: windows-release
-        path: build/meeting_transcriber_windows.zip
+        path: meeting_transcriber_windows.zip
 
     - name: Create Release
       if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/')
       uses: softprops/action-gh-release@v1
       with:
-        files: build/meeting_transcriber_windows.zip
+        files: meeting_transcriber_windows.zip
         tag_name: v1.0.${{ github.run_number }}
         name: Release v1.0.${{ github.run_number }}
         draft: false
