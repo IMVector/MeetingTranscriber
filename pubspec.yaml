@@ -1,0 +1,52 @@
+name: meeting_transcriber
+description: A cross-platform meeting transcription app with real-time speech recognition.
+
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State Management
+  provider: ^6.1.1
+
+  # Data Storage
+  sqflite: ^2.3.0
+  path_provider: ^2.1.1
+  path: ^1.8.3
+
+  # Audio Recording
+  record: ^6.0.0
+  audioplayers: ^6.0.0
+
+  # Permissions
+  permission_handler: ^11.1.0
+
+  # UI Components
+  cupertino_icons: ^1.0.6
+  flutter_slidable: ^3.0.1
+  intl: ^0.18.1
+
+  # FFI for whisper.cpp
+  ffi: ^2.1.0
+
+  # File picker
+  file_picker: ^6.1.1
+
+  # UUID
+  uuid: ^4.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/models/llama/
