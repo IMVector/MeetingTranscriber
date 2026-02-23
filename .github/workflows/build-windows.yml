@@ -25,8 +25,29 @@ jobs:
     - name: Get dependencies
       run: flutter pub get
 
+    - name: Download whisper.dll
+      run: |
+        # Download pre-built whisper.cpp for Windows
+        Invoke-WebRequest -Uri "https://github.com/ggerganov/whisper.cpp/releases/download/v1.7.0/whisper-ocl-bin-x64.zip" -OutFile "whisper-bin.zip"
+        Expand-Archive -Path "whisper-bin.zip" -DestinationPath "whisper-bin"
+        # Copy DLL to assets folder for Windows
+        Copy-Item "whisper-bin/main.dll" "assets/whisper.dll" -Force
+        Copy-Item "whisper-bin/whisper.dll" "assets/whisper.dll" -Force -ErrorAction SilentlyContinue
+        # Also copy ggml DLLs if available
+        Get-ChildItem "whisper-bin/*.dll" | Copy-Item -Destination "assets/" -Force
+      shell: pwsh
+      continue-on-error: true
+
     - name: Build Windows app
       run: flutter build windows --release
+
+    - name: Copy DLLs to output
+      run: |
+        # Copy whisper DLLs to the output directory
+        Copy-Item "assets/*.dll" "build/windows/x64/runner/Release/" -Force -ErrorAction SilentlyContinue
+        # Also copy the models
+        Copy-Item "assets/models/*.bin" "build/windows/x64/runner/Release/data/flutter_assets/assets/models/" -Force -ErrorAction SilentlyContinue
+      shell: pwsh
 
     - name: Create archive
       run: |
